@@ -11,7 +11,7 @@ namespace Data
 {
     public class DProduct
     {
-        public static string connectionString = "Data Source=LAB1504-18\\SQLEXPRESS;Initial Catalog=FacturaDB;User ID=userTecsup;Password=123456";
+        public static string connectionString = "Data Source=DESKTOP-JS9UAQM\\SQLEXPRESS;Initial Catalog=FacturaDB;User ID=userdm;Password=123456";
         public List<Product> Get()
         {
             List<Product> products = new List<Product>();
@@ -103,5 +103,32 @@ namespace Data
                 }
             }
         }
+
+        public bool Update(Product product)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "ActualizarProducto";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@product_id", product.Product_id);
+                    command.Parameters.AddWithValue("@name", product.Name);
+                    command.Parameters.AddWithValue("@category", product.Category);
+                    command.Parameters.AddWithValue("@price", product.Price);
+                    command.Parameters.AddWithValue("@stock", product.Stock);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    connection.Close();
+
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
     }
 }

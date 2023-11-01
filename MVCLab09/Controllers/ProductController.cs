@@ -72,19 +72,41 @@ namespace MVCLab09.Controllers
         // GET: ProductController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            BProduct business = new BProduct();
+            Product product = business.GetById(id);
+            ProductModel productModel = new ProductModel
+            {
+                Id = product.Product_id,
+                Category = product.Category,
+                Name = product.Name,
+                Price = product.Price,
+                Stock = product.Stock
+            };
+
+            return View(productModel);
         }
 
         // POST: ProductController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, ProductModel model)
         {
             try
             {
+                BProduct business = new BProduct();
+                Product product = new Product
+                {
+                    Product_id = model.Id,
+                    Name = model.Name,
+                    Category = model.Category,
+                    Price = model.Price,
+                    Stock = model.Stock
+                };
+
+                business.UpdateProduct(product);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch 
             {
                 return View();
             }
@@ -100,7 +122,8 @@ namespace MVCLab09.Controllers
                 Id = product.Product_id,
                 Category = product.Category,
                 Name = product.Name,
-                Price = product.Price
+                Price = product.Price,
+                Stock = product.Stock
             };
 
             return View(productModel);

@@ -48,5 +48,11 @@ namespace Business
             return deleteSuccess;
         }
 
+        public bool UpdateProduct(Product product)
+        {
+            DProduct data = new DProduct();
+            return data.Update(product);
+        }
+
     }
 }
